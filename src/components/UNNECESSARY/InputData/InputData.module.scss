@@ -1,0 +1,29 @@
+.inputData {
+    // display: flex;
+    // justify-content: space-between;
+    border: 1px solid #f3f3f3;
+    // padding: 30px;
+    width: 80vw;
+    height: 2vw;
+    border-radius: 10px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
+    }
+
+//     .textStudent{
+//         margin-bottom: 20px;
+//             position: fixed;
+//             font-weight: 300;
+//             font-size: 32px;
+//             // line-height: 39px;
+//             // margin-right: 145px;
+//     }
+
+    .textStudent{
+        display: block;
+        margin-bottom: 5px;
+        font-size: 2vw;
+        font-weight: 300;
+    }

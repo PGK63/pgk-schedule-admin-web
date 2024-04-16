@@ -1,0 +1,22 @@
+.studentList {
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid #f3f3f3;
+    padding: 2vw;
+    width: 83vw;
+    height: 4vw;
+    border-radius: 10px;
+    margin-right: 2vw;
+    margin-bottom: 1vw;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
+
+    h5{
+        display: flex;
+        font-weight: 300;
+        font-size: 2vw;
+        line-height: 2vw;
+        margin-right: 8vw;
+    }
+
+    }

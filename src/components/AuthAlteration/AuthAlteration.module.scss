@@ -1,0 +1,230 @@
+// *:where(:not(html, iframe, canvas, img, svg, video, audio):not(svg *, symbol *)) {
+//     all: unset;
+//   }
+// body {
+// 	overflow: hidden;
+// 	}
+
+.circle {
+	position: fixed;
+	width: 20vw;
+	height: 10vw;
+	left: 0;
+	top: 0;
+	border-radius: 0 0 50% 50% / 0 0 100% 100%;
+	background: rgba(164, 181, 218, 0.61);
+	backdrop-filter: blur(1px);
+	z-index: 100;
+}
+.circleSecond {
+	position: fixed;
+	width: 9vw;  /* ширина в два раза меньше высоты, иначе получится полуовал */
+  	height: 18vw;
+	// bottom: 0.5vw;
+	top: 0;
+	left: 0;
+  	border-radius: 0 100% 100% 0 / 0 50% 50% 0;
+	background: rgba(158, 177, 217, 0.45);
+	backdrop-filter: blur(1px);
+	z-index: 100;
+}
+.circleThird {
+	position: fixed;
+	width: 18vw;
+	height: 9vw;
+	right: 0;
+	bottom: 0;
+	overflow: hidden;
+	border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+	background: rgba(164, 181, 218, 0.61);
+	backdrop-filter: blur(1px);
+	z-index: 100;
+}
+.circleFourth {
+	width: 10vw;
+	height: 20vw;
+	border-radius: 100% 0 0 100% / 50% 0 0 50%;
+	position: fixed;
+	right: 0;
+    bottom: 0;
+	// bottom: -5vw;
+	// right: -10vw;
+	// border-radius: 50%;
+	background: rgba(164, 181, 218, 0.61);
+	backdrop-filter: blur(1px);
+	z-index: 100;
+}
+.container {
+	width: 100%;
+	height: 100vh;
+	// min-height: 100vh;
+	// overflow: hidden;
+	background-color: #170a45;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	margin: 0 auto;
+	// flex-shrink: 0;
+	// position: absolute;
+	// top: 50%;
+	// left: 50%;
+	// transform: translate(-50%, -50%);
+}
+.wrap {
+	width: 1200px;
+	background: #170a45;
+	border-radius: 10px;
+	overflow: hidden;
+	display: flex;
+	justify-content: space-between;
+	padding: 177px 130px 177px 95px;
+	padding-top: 100px;
+	padding-bottom: 33px;
+}
+.loginPic {
+	width: 100%;
+	width: 316px;
+	display: flex;
+	justify-content: center;
+}
+.loginForm {
+	background-color: #fff;
+	width: 400px;
+	// height: 532px;
+	box-shadow: 0px 0px 10px 2px rgba(34, 60, 80, 0.2);
+	border-radius: 20px;
+	padding: 1vw;
+	
+}
+.loginFormTitle {
+	font-family: Poppins-Bold;
+	font-size: 24px;
+	color: #333333;
+	line-height: 1.2;
+	text-align: center;
+	width: 100%;
+	display: block;
+	padding-bottom: 54px;
+}
+.authTitle {
+	margin-bottom: 50px;
+	display: flex;
+	justify-content: center;
+	font-size: 24px;
+	h5 {
+		color: black !important;
+	}
+}
+.inputBox {
+	display: flex;
+	justify-content: center;
+	border: 1px solid #f3f3f3;
+	padding: 3px;
+	border-radius: 10px;
+	margin-right: 30px;
+	margin-left: 30px;
+	margin-bottom: 30px;
+	border: 1px solid rgba(0, 0, 0, 0.37);
+	color: black;
+
+	::placeholder{
+		color: #333333 !important;
+	}
+}
+input {
+	
+	border: 0;
+	padding: 10px;
+	font-size: 13px;
+	width: 100%;
+}
+.logo {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+.content {
+	// padding-top: 30px;
+	// padding-bottom: 116px;
+	width: 100%;
+}
+.btnBox {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 20px;
+}
+.btnAuth {
+	background: #4C6EB8;
+	border-radius: 29px;
+	font-weight: 400;
+	font-size: 24px;
+	line-height: 29px;
+	color: #ffffff;
+	width: 85%;
+	padding-top: 14px;
+	padding-bottom: 14px;
+	text-align: center;
+	cursor: pointer;
+}
+@media (max-width: 992px) {
+	.wrap {
+		padding: 177px 90px 33px 85px;
+	}
+	.loginPic {
+		width: 35%;
+	}
+	.loginForm {
+		width: 50%;
+	}
+}
+@media (max-width: 768px) {
+	.wrap {
+		padding: 100px 80px 33px 80px;
+	}
+	.loginPic {
+		display: none;
+	}
+	.circle {
+		display: none;
+	}
+	.circleSecond {
+		display: none;
+	}
+	.circleThird {
+		display: none;
+	}
+	.circleFourth {
+		display: none;
+	}
+	.loginForm {
+		width: 100%;
+	}
+}
+@media (max-width: 576px) {
+	.wrap {
+		padding: 100px 15px 33px 15px;
+	}
+}
+
+// @media (max-height: 600px) {
+// 	.loginForm {
+// 	height: 100%;
+// 	overflow-y: scroll;
+// 	}
+// 	}
+// 	@media (min-height: 601px) and (max-height: 768px) {
+// 	.wrap {
+// 	padding-top: 100px;
+// 	padding-bottom: 33px;
+// 	}
+// 	}
+// 	@media (min-height: 769px) {
+// 	.wrap {
+// 	padding-top: 177px;
+// 	padding-bottom: 177px;
+// 	}
+// 	}
+
+    
