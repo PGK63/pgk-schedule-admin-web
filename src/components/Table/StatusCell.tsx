@@ -1,6 +1,7 @@
-import { FC } from "react";
+import { FC, useContext, useState } from "react";
 import { Box, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { STATUSES } from "../../data";
+import { Context } from '../../';
 
 interface Status {
   id: number;
@@ -26,6 +27,7 @@ export interface StatusCellProps {
 
 
 const StatusCell: FC<StatusCellProps> = ({ getValue, row, column, table }) => {
+  const {store} = useContext(Context)
   const { name, color } = getValue() || {};
   const { updateData } = table.options.meta;
 

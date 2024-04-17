@@ -28,7 +28,7 @@ const App: React.FC = () => {
 
     async function fetchData(): Promise<void> {
       try {
-        const [departmentsResponse, requestResponce, requestTeacher] = await Promise.all([store.getDepartments(), store.getRequests(), store.getTeacherData("",0)])
+        const [departmentsResponse, requestResponce, requestTeacher] = await Promise.all([store.getDepartments(), store.getRequests(), store.getTeacherData(0)])
         if (departmentsResponse !== undefined) {
           setDepartments(departmentsResponse);
         }

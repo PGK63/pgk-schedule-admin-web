@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Box, Button, ButtonGroup, Icon, Text } from "@chakra-ui/react";
+import { Context } from '../../';
 import {
   flexRender,
   getCoreRowModel,
@@ -61,26 +62,67 @@ const columns = [
   },
 ];
 
-
 const TaskTable = ({ items }) => {
+  const { store } = useContext(Context);
   const [data, setData] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [pageIndex, setPageIndex] = useState(0);
+  const [isMounted, setIsMounted] = useState(false); 
 
   useEffect(() => {
-    setData(extractContent(items));
-  }, [items]);
+    if (!isMounted && items.length > 0) { 
+      setData(extractContent(items));
+      setIsMounted(true); 
+    } else {
+      fetchData();
+    }
+  }, [items, isMounted, pageIndex]);
+  
+  const fetchData = () => {
+    try {
+      store.getTeacherData(pageIndex)
+        .then(pageItems => {
+          setData(extractContent(pageItems));
+        })
+        .catch(error => {
+          console.error("Error fetching data:", error);
+        });
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  
+  const nextPage = () => {
+    if (pageIndex + 1 < items[0]?.totalPage) {
+      setPageIndex(pageIndex + 1);
+    }
+  };
+  
+  const previousPage = () => {
+    if (pageIndex - 1 >= 0) {
+      setPageIndex(pageIndex - 1);
+    }
+  };
+    
+  const extractContent = (array) => {
+    return (Array.isArray(array) && array.length > 0 && Array.isArray(array[0].content)) ? array[0].content : [] 
+  }
 
+  const deleteRow = (rowIndex) => {
+    const newData = [...data];
+    newData.splice(rowIndex, 1);
+    setData(newData);
+  };
+
+  const addRow = () => {
+    setData([...data, {}]);
+  };
 
   const table = useReactTable({
     data,
     columns,
     state: {
-      columnFilters,
-      pagination: {
-        pageIndex, 
-        pageSize: 20,
-      },
+      columnFilters
     },
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -102,27 +144,12 @@ const TaskTable = ({ items }) => {
     },
   });
 
-  function extractContent(array) {
-    return (Array.isArray(array) && array.length > 0 && Array.isArray(array[0].content)) ? array[0].content : [] 
-  }
-
-  const deleteRow = (rowIndex) => {
-    const newData = [...data];
-    newData.splice(rowIndex, 1);
-    setData(newData);
-  };
-
-  const addRow = () => {
-    setData([...data, {}]);
-  };
-
-
   return (
     <Box>
-    <Filters
-      columnFilters={columnFilters}
-      setColumnFilters={setColumnFilters}
-    />
+      <Filters
+        columnFilters={columnFilters}
+        setColumnFilters={setColumnFilters}
+      />
       <Box className="table" w={table.getTotalSize()}>
         {table.getHeaderGroups().map((headerGroup) => (
           <Box className="tr" key={headerGroup.id}>
@@ -180,19 +207,18 @@ const TaskTable = ({ items }) => {
       <br />
       <Button onClick={addRow}>Add Row</Button>
       <Text mb={2}>
-        Page {table.getState().pagination.pageIndex + 1} of{" "}
-        {table.getPageCount()}
+        Page {pageIndex + 1} of {items[0]?.totalPage || 1}
       </Text>
       <ButtonGroup size="sm" isAttached variant="outline">
         <Button
-          onClick={() => table.previousPage()}
-          isDisabled={!table.getCanPreviousPage()}
+          onClick={previousPage}
+          isDisabled={pageIndex === 0}
         >
           {"<"}
         </Button>
         <Button
-          onClick={() => table.nextPage()}
-          isDisabled={!table.getCanNextPage()}
+          onClick={nextPage}
+          isDisabled={pageIndex === items[0]?.totalPage - 1}
         >
           {">"}
         </Button>

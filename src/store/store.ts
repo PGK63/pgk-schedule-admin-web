@@ -10,8 +10,12 @@ import RequestsService from "../services/RequestsService";
 import StudentInfo from "../services/StudentInfo";
 import { IStudentInfo } from "../models/IStudentInfo";
 import GenerateDocument from "../services/GenerateDocument";
+import { IDepartementColor } from "../models/IDepartmentColor";
+import { reduceRight } from "lodash";
 
 export default class Store{
+   departments: IDepartement[] = [];
+   departmentsWithColor: IDepartementColor[] = [];
    role = ''; 
    isAuth = false;
    isLoading = false;
@@ -22,6 +26,10 @@ export default class Store{
    constructor(){
     makeAutoObservable(this);
    }
+
+   setDepartments(departments: IDepartement[]) {
+    this.departments = departments;
+  }
 
    setSelectedDepartmentName(name: string[]) {
     this.selectedDepartmentName = name;
@@ -55,12 +63,16 @@ export default class Store{
     }
    }
 
-   async getTeacherData(name: string, offset: number): Promise<IStudentInfo[]> {
+   async getTeacherData(offset: number): Promise<IStudentInfo[]> {
     try {
-        const response = await StudentInfo.fetchStudentById(name, offset);
-        return [response.data]; 
+        const response = await StudentInfo.fetchStudentById(offset);
+        if (response && response.data) {
+            return [response.data]; 
+        } else {
+            throw new Error("No data received");
+        }
     } catch (error) {
-        console.error(error);
+        console.error("Error fetching data:", error);
         throw error;
     }
 }
@@ -70,6 +82,7 @@ export default class Store{
     this.setLoading(true);
     try{
         const responce = await DepartmentService.fetchDepartments();
+        this.setDepartments(responce);
         console.log(responce)
         return responce
     } catch (e) {
@@ -78,6 +91,14 @@ export default class Store{
       this.setLoading(false);
     }
    }
+
+   async addColorsToDepartments() {
+    const colors = ["blue.300", "yellow.400", "green.300", "pink.300"];
+    this.departments.forEach((department, index) => {
+      const color = colors[index % colors.length];
+      return this.departmentsWithColor.push({ ...department, color });
+    });
+  }
 
    async getRequests(){
     this.setLoading(true);
