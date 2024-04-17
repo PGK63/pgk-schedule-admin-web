@@ -13,7 +13,6 @@ import EditableCell from "./EditableCell";
 import StatusCell from "./StatusCell";
 import Filters from "./Filters";
 import SortIcon from "./icons/SortIcon";
-import * as _ from "lodash";
 
 const columns = [
   {
@@ -105,7 +104,7 @@ const TaskTable = ({ items }) => {
   };
     
   const extractContent = (array) => {
-    return (Array.isArray(array) && array.length > 0 && Array.isArray(array[0].content)) ? array[0].content : [] 
+    return (Array.isArray(array) && array.length > 0 && Array.isArray(array[0].content)) ? array[0].content : []
   }
 
   const deleteRow = (rowIndex) => {
