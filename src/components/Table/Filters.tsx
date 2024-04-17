@@ -14,27 +14,11 @@ export interface Filter {
 }
 
 interface FiltersProps {
-  columnFilters: Filter[];
-  setColumnFilters: (filters: Filter[]) => void;
+  value: string;
+  onValueChange: (filters: string) => void;
 }
 
-const Filters: FC<FiltersProps> = ({ columnFilters, setColumnFilters }) => {
-  const taskName = columnFilters.find((f) => f.id === "task")?.value || "";
-
-  const onFilterChange = (id: string, value: string) => {
-    const newFilters: Filter[] = columnFilters
-      .filter((f) => f.id !== id)
-      .concat({
-        id,
-        value,
-      });
-    setColumnFilters(newFilters);
-  };
-
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    onFilterChange("task", value);
-  };
+const Filters: FC<FiltersProps> = ({ value, onValueChange}) => {
 
   return (
     <HStack mb={6} spacing={3}>
@@ -47,8 +31,8 @@ const Filters: FC<FiltersProps> = ({ columnFilters, setColumnFilters }) => {
           variant="filled"
           placeholder="Task name"
           borderRadius={5}
-          value={taskName}
-          onChange={handleInputChange}
+          value={value}
+          onChange={(v) =>  onValueChange(v.target.value)}
         />
       </InputGroup>
     </HStack>

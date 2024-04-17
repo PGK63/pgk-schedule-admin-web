@@ -64,9 +64,13 @@ const columns = [
 const TaskTable = ({ items }) => {
   const { store } = useContext(Context);
   const [data, setData] = useState([]);
-  const [columnFilters, setColumnFilters] = useState([]);
   const [pageIndex, setPageIndex] = useState(0);
-  const [isMounted, setIsMounted] = useState(false); 
+  const [isMounted, setIsMounted] = useState(false);
+  const [search, setSearch] = useState("")
+
+  useEffect(() => {
+    fetchData(search)
+  }, [search])
 
   useEffect(() => {
     if (!isMounted && items.length > 0) { 
@@ -77,9 +81,9 @@ const TaskTable = ({ items }) => {
     }
   }, [items, isMounted, pageIndex]);
   
-  const fetchData = () => {
+  const fetchData = (name = "") => {
     try {
-      store.getTeacherData(pageIndex)
+      store.getTeacherData(pageIndex, name)
         .then(pageItems => {
           setData(extractContent(pageItems));
         })
@@ -107,25 +111,25 @@ const TaskTable = ({ items }) => {
     return (Array.isArray(array) && array.length > 0 && Array.isArray(array[0].content)) ? array[0].content : []
   }
 
-  const deleteRow = (rowIndex) => {
-    const newData = [...data];
-    newData.splice(rowIndex, 1);
-    setData(newData);
+  const deleteRow = (rowIndex, id) => {
+    store.deleteById(id).then(() => {
+      const newData = [...data];
+      newData.splice(rowIndex, 1);
+      setData(newData);
+    }).catch(e => console.log(e.data))
   };
 
   const addRow = () => {
-    setData([...data, {}]);
+    setData([...data, {
+      departments: []
+    }]);
   };
 
   const table = useReactTable({
     data,
     columns,
-    state: {
-      columnFilters
-    },
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     columnResizeMode: "onChange",
     meta: {
@@ -146,8 +150,8 @@ const TaskTable = ({ items }) => {
   return (
     <Box>
       <Filters
-        columnFilters={columnFilters}
-        setColumnFilters={setColumnFilters}
+        value={search}
+        onValueChange={setSearch}
       />
       <Box className="table" w={table.getTotalSize()}>
         {table.getHeaderGroups().map((headerGroup) => (
@@ -194,7 +198,7 @@ const TaskTable = ({ items }) => {
                 fontSize="30"
                 color="red.300"
                 onClick={() => {
-                  deleteRow(rowIndex);
+                  deleteRow(rowIndex, row.original.id);
                 }}
               >
                 &times;

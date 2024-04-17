@@ -1,6 +1,4 @@
 import axios from 'axios'
-import Header from '../components/Header'
-import { error } from 'console'
 import { AuthResponce } from "../models/responce/AuthResponse";
 
 export const API_URL = 'https://api.danbel.ru:30/pgk/schedule/v1.1'

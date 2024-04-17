@@ -43,10 +43,6 @@ const StatusCell: FC<StatusCellProps> = ({ getValue, row, column, table }) => {
   const [data, setDate] = useState(getValue());
   const { updateData } = table.options.meta;
 
-  useEffect(() => {
-    console.log(data)
-  }, [])
-
   const handleStatusUpdate = (status: Status) => {
     const indexToRemove = data.findIndex(item => item.id === status.id);
 

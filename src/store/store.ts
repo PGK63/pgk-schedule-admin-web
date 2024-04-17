@@ -63,9 +63,9 @@ export default class Store{
     }
    }
 
-   async getTeacherData(offset: number): Promise<IStudentInfo[]> {
+   async getTeacherData(offset: number, search: string = ""): Promise<IStudentInfo[]> {
     try {
-        const response = await StudentInfo.fetchStudentById(offset);
+        const response = await StudentInfo.fetchStudentById(offset, search);
         if (response && response.data) {
             return [response.data]; 
         } else {
@@ -76,6 +76,10 @@ export default class Store{
         throw error;
     }
 }
+
+    async deleteById(id: number) {
+       return await StudentInfo.deleteById(id)
+    }
 
 
    async getDepartments(){
