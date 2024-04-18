@@ -7,7 +7,7 @@ import $api, { API_URL } from "../http";
 import DepartmentService from "../services/DeraptmentService";
 import { IDepartement } from "../models/IDepartement";
 import RequestsService from "../services/RequestsService";
-import StudentInfo from "../services/StudentInfo";
+import StudentInfo, {TeacherPostData} from "../services/StudentInfo";
 import { IStudentInfo } from "../models/IStudentInfo";
 import GenerateDocument from "../services/GenerateDocument";
 import { IDepartementColor } from "../models/IDepartmentColor";
@@ -81,6 +81,13 @@ export default class Store{
        return await StudentInfo.deleteById(id)
     }
 
+    async add(data: TeacherPostData) {
+        return await StudentInfo.add(data)
+    }
+
+    async update(id: number, data: TeacherPostData) {
+        return await StudentInfo.update(data, id)
+    }
 
    async getDepartments(){
     this.setLoading(true);

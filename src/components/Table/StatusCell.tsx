@@ -1,7 +1,6 @@
-import {FC, useContext, useEffect, useState} from "react";
+import {FC, useEffect, useState} from "react";
 import { Box, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { STATUSES } from "../../data";
-import { Context } from '../../';
 
 interface Status {
   id: number;
@@ -39,8 +38,7 @@ const getColorByDep = (departments: Status[]) => {
 };
 
 const StatusCell: FC<StatusCellProps> = ({ getValue, row, column, table }) => {
-  const {store} = useContext(Context)
-  const [data, setDate] = useState(getValue());
+  const data = getValue();
   const { updateData } = table.options.meta;
 
   const handleStatusUpdate = (status: Status) => {
