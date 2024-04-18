@@ -1,34 +1,12 @@
 header{
-    background-color: #A4B5DA;
+    background-color: #1a202c;
     border-radius: 0px 0px 10px 10px;
-}
-
-.searchBlock {
-    display: flex;
-    border: 1px solid #f3f3f3;
-    border-radius: 10px;
-    padding: 0 15px;
-    position: relative;
-    background-color: #f3f3f3;
+    width: 100dvw !important;
 }
 
 .btnRemove {
     position: absolute;
     top: 50%;
     right: 5px;
-    transform: translateY(-50%); /* чтобы выровнять по вертикали */
-}
-
-// .inputBlock {
-//     border: 0;
-//     padding: 1vw;
-//     font-size: 16px;
-//     width: 500px;
-//   }
-
-.inputBlock {
-    border: 0;
-    // padding: 13px;
-    font-size: 16px;
-    // width: 500px;
+    transform: translateY(-50%);
 }

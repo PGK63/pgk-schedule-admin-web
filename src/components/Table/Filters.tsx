@@ -29,7 +29,7 @@ const Filters: FC<FiltersProps> = ({ value, onValueChange}) => {
         <Input
           type="text"
           variant="filled"
-          placeholder="Task name"
+          placeholder="Поиск..."
           borderRadius={5}
           value={value}
           onChange={(v) =>  onValueChange(v.target.value)}

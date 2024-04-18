@@ -19,34 +19,34 @@ const columns = [
   {
     accessorKey: "lastName",
     header: "Фамилия",
-    size: 225,
     cell: EditableCell,
     enableColumnFilter: true,
     filterFn: "includesString",
+    size: "225"
   },
   {
     accessorKey: "firstName",
     header: "Имя",
-    size: 225,
     cell: EditableCell,
     enableColumnFilter: true,
     filterFn: "includesString",
+    size: "225"
   },
   {
     accessorKey: "middleName",
     header: "Отчество",
-    size: 225,
     cell: EditableCell,
     enableColumnFilter: true,
     filterFn: "includesString",
+    size: "225"
   },
   {
     accessorKey: "cabinet",
     header: "Кабинет",
-    size: 225,
     cell: EditableCell,
     enableColumnFilter: true,
     filterFn: "includesString",
+    size: "225"
   },
   {
     accessorKey: "departments",
@@ -54,6 +54,7 @@ const columns = [
     cell: StatusCell,
     enableSorting: false,
     enableColumnFilter: true,
+    size: "225",
     filterFn: (row, columnId, filterStatuses) => {
       if (filterStatuses.length === 0) return true;
       const status = row.getValue(columnId);
@@ -122,16 +123,16 @@ const TaskTable = ({ items }) => {
         const newData = [...data];
         newData.splice(rowIndex, 1);
         setData(newData);
-        toast.success("Success")
+        toast.success("Успешно!")
       }).catch(err => {
-        toast.error("Failed")
+        toast.error("Ошибка!")
       })
     }
   };
 
   const saveRow = (rowIndex, row) => {
     if (!row.firstName && !row.lastName && !row.departments.length) {
-      toast.warning("Validation error")
+      toast.warning("Заполните все поля!")
       return
     }
 
@@ -143,8 +144,6 @@ const TaskTable = ({ items }) => {
       departmentIds: row.departments.map(dep => dep.id),
     };
 
-    console.log(newRow)
-
     if(row.isAdd === true) {
       store.add(newRow).then(() => {
         const newData = [...data];
@@ -152,12 +151,13 @@ const TaskTable = ({ items }) => {
         newData[rowIndex] = row;
         setData(newData);
 
-        toast.success("Success")
+        toast.success("Успешно!")
       }).catch((err) => {
         console.log(err)
-        toast.error("Failed")
+        toast.error("Ошибка!")
       })
     }else if(row.isUpdate === true) {
+      console.log(row.id)
       store.update(row.id, newRow).then((d) => {
         console.log(d)
         const newData = [...data];
@@ -165,10 +165,10 @@ const TaskTable = ({ items }) => {
         newData[rowIndex] = row;
         setData(newData);
 
-        toast.success("Success")
+        toast.success("Успешно!")
       }).catch((err) => {
         console.log(err)
-        toast.error("Failed")
+        toast.error("Ошибка!")
       })
     }
   }
@@ -204,16 +204,21 @@ const TaskTable = ({ items }) => {
   });
 
   return (
-      <Box>
+      <Box padding="30px">
         <Filters
             value={search}
             onValueChange={setSearch}
         />
         <Box className="table" w={table.getTotalSize()}>
           {table.getHeaderGroups().map((headerGroup) => (
-              <Box className="tr" key={headerGroup.id}>
+              <Box
+                  className="tr"
+                  key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                    <Box className="th" w={header.getSize()} key={header.id}>
+                    <Box
+                        className="th"
+                        w={header.getSize()}
+                        key={header.id}>
                       {header.column.columnDef.header}
                       {header.column.getCanSort() && (
                           <Icon
@@ -230,8 +235,8 @@ const TaskTable = ({ items }) => {
                         }[header.column.getIsSorted()]
                       }
                       <Box
-                          onMouseDown={header.getResizeHandler()}
-                          onTouchStart={header.getResizeHandler()}
+                          onMouseDown={header.getResizeHandler()} //for desktop
+                          onTouchStart={header.getResizeHandler()} //for mobile
                           className={`resizer ${
                               header.column.getIsResizing() ? "isResizing" : ""
                           }`}
@@ -241,9 +246,14 @@ const TaskTable = ({ items }) => {
               </Box>
           ))}
           {table.getRowModel().rows.map((row, rowIndex) => (
-              <Box className="tr" key={row.id}>
+              <Box
+                  className="tr"
+                  key={row.id}>
                 {row.getVisibleCells().map((cell) => (
-                    <Box className="td" w={cell.column.getSize()} key={cell.id}>
+                    <Box
+                        className="td"
+                        w={cell.column.getSize()}
+                        key={cell.id}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </Box>
                 ))}
@@ -268,9 +278,9 @@ const TaskTable = ({ items }) => {
           ))}
         </Box>
         <br/>
-        <Button onClick={addRow} marginBottom="15px">Add Row</Button>
+        <Button onClick={addRow} marginBottom="15px">Добавить преподавателя</Button>
         <Text mb={2}>
-          Page {pageIndex + 1} of {items[0]?.totalPage || 1}
+          Страница {pageIndex + 1} из {items[0]?.totalPage || 1}
         </Text>
         <ButtonGroup size="sm" isAttached variant="outline">
           <Button

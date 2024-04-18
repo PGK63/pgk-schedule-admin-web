@@ -1,27 +1,17 @@
 import { makeAutoObservable } from "mobx";
-import { IUser } from "../models/IUser";
 import AuthService from "../services/AuthService";
-import axios from "axios";
 import { AuthResponce } from "../models/responce/AuthResponse";
 import $api, { API_URL } from "../http";
 import DepartmentService from "../services/DeraptmentService";
 import { IDepartement } from "../models/IDepartement";
-import RequestsService from "../services/RequestsService";
 import StudentInfo, {TeacherPostData} from "../services/StudentInfo";
 import { IStudentInfo } from "../models/IStudentInfo";
-import GenerateDocument from "../services/GenerateDocument";
-import { IDepartementColor } from "../models/IDepartmentColor";
-import { reduceRight } from "lodash";
+
 
 export default class Store{
    departments: IDepartement[] = [];
-   departmentsWithColor: IDepartementColor[] = [];
-   role = ''; 
    isAuth = false;
    isLoading = false;
-   clickedDepartemt: number[] = [];
-   studentId:number[] = []
-   selectedDepartmentName = [''];
 
    constructor(){
     makeAutoObservable(this);
@@ -31,37 +21,14 @@ export default class Store{
     this.departments = departments;
   }
 
-   setSelectedDepartmentName(name: string[]) {
-    this.selectedDepartmentName = name;
-  }
 
    setAuth(bool: boolean){
     this.isAuth = bool;
-   }
-
-   setRole(role: string){
-    this.role = role;
    }
    setLoading(bool: boolean) {
     this.isLoading = bool;
    }
 
-   setclickedDepartemt(id: number) {
-    this.clickedDepartemt = [id];
-   }
-
-   async GenerateDocumentByID(id: number){
-    this.setLoading(false);
-    try{
-        const responce = await GenerateDocument.downloadFile(id);
-        console.log(responce)
-        return responce
-    } catch (e) {
-        console.log(e.responce?.data?.message);
-    }finally {
-      this.setLoading(false);
-    }
-   }
 
    async getTeacherData(offset: number, search: string = ""): Promise<IStudentInfo[]> {
     try {
@@ -76,10 +43,6 @@ export default class Store{
         throw error;
     }
 }
-
-    async deleteById(id: number) {
-       return await StudentInfo.deleteById(id)
-    }
 
     async add(data: TeacherPostData) {
         return await StudentInfo.add(data)
@@ -103,36 +66,6 @@ export default class Store{
     }
    }
 
-   async addColorsToDepartments() {
-    const colors = ["blue.300", "yellow.400", "green.300", "pink.300"];
-    this.departments.forEach((department, index) => {
-      const color = colors[index % colors.length];
-      return this.departmentsWithColor.push({ ...department, color });
-    });
-  }
-
-   async getRequests(){
-    this.setLoading(true);
-    try{
-        const response = await RequestsService.fetchRequestsById(this.clickedDepartemt[0]);
-        console.log(response)
-        
-        this.studentId.splice(0); // очищаем массив перед добавлением новых значений
-      
-        response.data.forEach((request) => {
-          this.studentId.push(request.userId);
-        });
-        
-        console.log(this.studentId)
-        return response
-    } catch (e) {
-        console.log(e.responce?.data?.message);
-    }finally {
-      this.setLoading(false);
-    }
-  }
-  
-
    async login(login: string, password: string){
     try{
         const responce = await AuthService.login(login, password);
@@ -140,7 +73,6 @@ export default class Store{
         localStorage.setItem('accessToken', responce.data.accessToken);
         localStorage.setItem('refreshToken', responce.data.refreshToken);
         this.setAuth(true);
-        this.setRole(responce.data.role)
     } catch (e) {
         console.log(e.responce?.data?.message);
     }
@@ -152,7 +84,6 @@ export default class Store{
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
         this.setAuth(false);
-        this.setRole('')
     } catch (e) {
         console.log(e.responce?.data?.message);
     }
@@ -196,7 +127,6 @@ async CheckAuth() {
         localStorage.setItem('refreshToken', response.data.refreshToken);
         localStorage.setItem('accessTokenTime', String(new Date().getTime()));
         this.setAuth(true);
-        this.setRole(response.data.role);
       } else {
         this.setAuth(true);
       }
