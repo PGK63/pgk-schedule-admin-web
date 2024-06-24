@@ -12,18 +12,18 @@ export interface TeacherPostData {
 
 export default class StudentInfo {
     static fetchStudentById(offset: number, name: string): Promise<AxiosResponse<IStudentInfo>> {
-        return $api.get<IStudentInfo>(`/teachers?offset=${offset}&name=${name}`);
+        return $api.get<IStudentInfo>(`/teacher-service?offset=${offset}&name=${name}`);
     }
 
     static deleteById(id: number) {
-        return $api.delete(`/teachers/${id}`)
+        return $api.delete(`/teacher-service/${id}`)
     }
 
     static add(data: TeacherPostData) {
-        return $api.post('/teachers', data)
+        return $api.post('/teacher-service', data)
     }
 
     static update(data: TeacherPostData, id: number) {
-        return $api.put(`/teachers/${id}`, data)
+        return $api.put(`/teacher-service/${id}`, data)
     }
 }

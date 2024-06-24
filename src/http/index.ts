@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { AuthResponce } from "../models/responce/AuthResponse";
 
-export const API_URL = 'https://api.danbel.ru:30/pgk/schedule/v1.1'
+export const API_URL = 'https://pgk.schedule.api.danbel.ru:30'
 
 const $api = axios.create({
     withCredentials: false,
@@ -23,7 +23,7 @@ $api.interceptors.response.use((config) => {
         originalRequest._isRetry = true
         try {
             const response = await $api.post<AuthResponce>(
-                '/user/security/refresh',
+                '/auth-service/auth/refresh',
                 {},
                 {
                     headers: {

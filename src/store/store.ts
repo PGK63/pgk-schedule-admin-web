@@ -33,6 +33,7 @@ export default class Store{
    async getTeacherData(offset: number, search: string = ""): Promise<IStudentInfo[]> {
     try {
         const response = await StudentInfo.fetchStudentById(offset, search);
+        console.log(response)
         if (response && response.data) {
             return [response.data]; 
         } else {
@@ -55,10 +56,10 @@ export default class Store{
    async getDepartments(){
     this.setLoading(true);
     try{
-        const responce = await DepartmentService.fetchDepartments();
-        this.setDepartments(responce);
-        console.log(responce)
-        return responce
+        // const responce = await DepartmentService.fetchDepartments();
+        // this.setDepartments(responce);
+        // console.log(responce)
+        // return responce
     } catch (e) {
         console.log(e.responce?.data?.message);
     }finally {
@@ -115,7 +116,7 @@ async CheckAuth() {
   
       if (timeSinceAccessTokenObtained >= tokenLifeTime) {
         const response = await $api.post<AuthResponce>(
-          '/user/security/refresh',
+          '/auth-service/auth/refresh',
           {},
           {
               headers: {
